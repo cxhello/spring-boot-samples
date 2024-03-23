@@ -1,0 +1,16 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: spring-boot-nacos-sample
+  cloud:
+    nacos:
+      username: ${NACOS_NAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      config:
+        server-addr: ${NACOS_IP:nacos}:${NACOS_PORT:8848}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+      discovery:
+        server-addr: ${NACOS_IP:nacos}:${NACOS_PORT:8848}
+        group: DEFAULT_GROUP

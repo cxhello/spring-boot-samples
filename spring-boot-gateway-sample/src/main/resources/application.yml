@@ -1,0 +1,73 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-cloud-gateway-example
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+           # 使用不安全的信任管理器不适合生产
+           use-insecure-trust-manager: true
+#          trusted-x509-certificates:
+#            - classpath:server.crt
+      routes:
+        # 代理HTTP
+        - id: api1
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api1/**
+          filters:
+            - RewritePath=/api1/?(?<segment>.*), /$\{segment}
+        # 代理HTTPS
+        - id: api2
+          uri: https://localhost
+          predicates:
+            - Path=/api2/**
+          filters:
+            - RewritePath=/api2/?(?<segment>.*), /$\{segment}
+        # 代理微服务
+        - id: api3
+          uri: lb://spring-boot-nacos-sample
+          predicates:
+            - Path=/api3/**
+          filters:
+            - RewritePath=/api3/?(?<segment>.*), /$\{segment}
+        # 代理WebService http://localhost:8084/api4/services/helloService?wsdl
+        - id: api4
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api4/**
+            - Query=wsdl
+          filters:
+            - RewritePath=/api4/?(?<segment>.*), /$\{segment}
+        # 代理Websocket
+        - id: api5
+          uri: https://localhost
+          predicates:
+            - Path=/api5/**
+          filters:
+            - RewritePath=/api5/?(?<segment>.*), /$\{segment}
+      redis-route-definition-repository:
+        enabled: true
+    nacos:
+      discovery:
+        server-addr: nacos:8848
+        username: nacos
+        password: nacos
+    sentinel:
+      transport:
+        dashboard: sentinel:18080
+        port: 18719
+      eager: true
+  redis:
+    database: 2
+    host: redis
+    port: 6379
+    password: 123456
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: "*"
