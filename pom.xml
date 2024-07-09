@@ -38,6 +38,7 @@
         <lombok.version>1.18.26</lombok.version>
         <cxf.version>3.5.7</cxf.version>
         <bcpkix-jdk18on.version>1.77</bcpkix-jdk18on.version>
+        <hutool-crypto.version>5.8.29</hutool-crypto.version>
     </properties>
 
     <modules>
@@ -86,6 +87,13 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${bcpkix-jdk18on.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-crypto -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-crypto</artifactId>
+                <version>${hutool-crypto.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
